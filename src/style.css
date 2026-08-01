@@ -44,8 +44,9 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 3vh 6vw;
-    gap: 1.5vh;
+    padding: 1.5vh 6vw;
+    gap: 1vh;
+    overflow: hidden;
 }
 
 body.has-data #main-content {
@@ -59,7 +60,7 @@ header {
 }
 
 #logo {
-    height: 9vh;
+    height: 7vh;
     width: auto;
 }
 
@@ -73,9 +74,10 @@ header {
 /* Table */
 table {
     flex: 1;
+    min-height: 0;
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 1.2vh;
+    border-spacing: 0 0.8vh;
     table-layout: fixed;
 }
 
@@ -92,8 +94,11 @@ thead th:nth-child(2) { text-align: left;   width: 56%; padding-left: 2.5vw; }
 thead th:last-child   { text-align: right;  width: 30%; padding-right: 2.5vw; }
 
 td {
-    height: 13vh;
+    height: 12vh;
+    max-height: 12vh;
+    overflow: hidden;
     vertical-align: middle;
+    line-height: 1;
 }
 
 td:first-child {
@@ -130,7 +135,7 @@ tr[data-team] td {
 
 /* Rank medal colours */
 tr[data-team]:nth-child(1) td:first-child {
-    font-size: 7vw;
+    font-size: 5vw;
     color: #FFD700;
     text-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
 }
