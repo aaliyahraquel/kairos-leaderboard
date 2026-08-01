@@ -1,5 +1,5 @@
 const API =
-  "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSC91DP2WHj3p8Ge7sbBGs1uDST_FA6fZXDkWLOKI1Q9eiSu033ay9zp8ZNvKmq80wzBFLTII2Jok-omSYQSfYQ2PcDwegolnAwy90Rh62FOV3uz-9q0Gf5GAn7Mx3CLccexg1A0i0yW57myKAq2BUG8d0eJ8nCqogC-b5S1QTBORDh11ijCDENcy0ftbA_he4EC2WnwnbxcZdRSdLiqxSjCvGAsDrcC3iz_hlOVRAuqkrs5S7cR0C8hoOobCVDQPaonB0CSgEtQ_tUlxZnj2C1plY6Ew&lib=MGVrbAM_pdBWdWWJzuiSu3Aoq0hkS1uT9";
+  "https://docs.google.com/spreadsheets/d/1FtnIg2ORYBQvSFKRpidMLFW5aUpKiKZW/edit?usp=drive_link&ouid=113371019777636115022&rtpof=true&sd=true";
 
 const COLOUR_MAP = {
     red:    "#ce0e0e",
