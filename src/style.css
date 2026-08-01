@@ -1,126 +1,146 @@
-body{
-
-    background:#111;
-    color:white;
-
-    font-family:'Poppins', Arial, sans-serif;
-    font-weight:700;
-    font-size:64px;
-    text-transform:uppercase;
-
-    padding:60px;
-
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/* ── Splash screen ────────────────────────────────── */
+body {
+    background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%);
+    color: white;
+    font-family: 'Poppins', Arial, sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    height: 100vh;
+    overflow: hidden;
+}
 
+/* Splash */
 #splash {
-
     position: fixed;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #111;
+    background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%);
     z-index: 100;
-    transition: opacity 0.8s ease;
-
+    transition: opacity 1s ease;
 }
 
 #splash.hidden {
-
     opacity: 0;
     pointer-events: none;
-
 }
 
 #splash-logo {
-
-    width: 700px;
-    max-width: 80vw;
-
+    width: 50vw;
+    max-width: 700px;
+    filter: drop-shadow(0 0 80px rgba(255, 255, 255, 0.15));
 }
 
-/* ── Main leaderboard content ─────────────────────── */
-
+/* Main content */
 #main-content {
-
     opacity: 0;
-    transition: opacity 0.8s ease;
-
+    transition: opacity 1s ease;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 3vh 6vw;
+    gap: 1.5vh;
 }
 
 body.has-data #main-content {
-
     opacity: 1;
-
-}
-
-table{
-
-    width:1400px;
-    max-width:100%;
-    margin: 0 auto;
-
-    border-collapse:separate;
-    border-spacing: 0 16px;
-
-}
-
-th{
-
-    background:#222;
-
-    padding:36px;
-    text-align:center;
-
-}
-
-td{
-
-    padding:36px;
-    text-align:center;
-
-}
-
-tr[data-team] {
-
-    will-change: transform;
-    border: 1px solid #444;
-
-}
-
-tr[data-team] td:first-child {
-
-    border-radius: 8px 0 0 8px;
-
-}
-
-tr[data-team] td:last-child {
-
-    border-radius: 0 8px 8px 0;
-
 }
 
 header {
-
     display: flex;
     justify-content: center;
-    margin-bottom: 4px;
-
-}
-
-#leaderboard-title {
-
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 72px;
-
+    align-items: center;
 }
 
 #logo {
+    height: 9vh;
+    width: auto;
+}
 
-    max-width: 280px;
+#leaderboard-title {
+    text-align: center;
+    font-size: 2vw;
+    letter-spacing: 0.5em;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Table */
+table {
+    flex: 1;
     width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1.2vh;
+    table-layout: fixed;
+}
 
+thead th {
+    font-size: 1.2vw;
+    letter-spacing: 0.3em;
+    color: rgba(255, 255, 255, 0.25);
+    padding-bottom: 0.5vh;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+thead th:first-child  { text-align: center; width: 14%; }
+thead th:nth-child(2) { text-align: left;   width: 56%; padding-left: 2.5vw; }
+thead th:last-child   { text-align: right;  width: 30%; padding-right: 2.5vw; }
+
+td {
+    height: 13vh;
+    vertical-align: middle;
+}
+
+td:first-child {
+    text-align: center;
+    font-size: 5.5vw;
+    border-radius: 16px 0 0 16px;
+    width: 14%;
+}
+
+td:nth-child(2) {
+    text-align: left;
+    font-size: 3.8vw;
+    padding-left: 2.5vw;
+    width: 56%;
+    letter-spacing: 0.05em;
+}
+
+td:last-child {
+    text-align: right;
+    font-size: 4.5vw;
+    padding-right: 2.5vw;
+    border-radius: 0 16px 16px 0;
+    width: 30%;
+}
+
+tr[data-team] {
+    will-change: transform;
+}
+
+tr[data-team] td {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Rank medal colours */
+tr[data-team]:nth-child(1) td:first-child {
+    font-size: 7vw;
+    color: #FFD700;
+    text-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+}
+
+tr[data-team]:nth-child(2) td:first-child {
+    color: #D8D8D8;
+    text-shadow: 0 0 30px rgba(216, 216, 216, 0.5);
+}
+
+tr[data-team]:nth-child(3) td:first-child {
+    color: #CD7F32;
+    text-shadow: 0 0 30px rgba(205, 127, 50, 0.5);
 }
