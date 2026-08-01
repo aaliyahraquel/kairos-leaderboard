@@ -12,6 +12,50 @@ body{
 
 }
 
+/* ── Splash screen ────────────────────────────────── */
+
+#splash {
+
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #111;
+    z-index: 100;
+    transition: opacity 0.8s ease;
+
+}
+
+#splash.hidden {
+
+    opacity: 0;
+    pointer-events: none;
+
+}
+
+#splash-logo {
+
+    width: 400px;
+    max-width: 80vw;
+
+}
+
+/* ── Main leaderboard content ─────────────────────── */
+
+#main-content {
+
+    opacity: 0;
+    transition: opacity 0.8s ease;
+
+}
+
+body.has-data #main-content {
+
+    opacity: 1;
+
+}
+
 table{
 
     width:700px;

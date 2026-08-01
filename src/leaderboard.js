@@ -32,6 +32,15 @@ export async function loadLeaderboard() {
 
     const top5 = (await response.json()).sort((a, b) => b.Total - a.Total).slice(0, 5);
 
+    // Only reveal the leaderboard once at least one team has a score
+    const hasData = top5.some(t => t.Total > 0);
+    if (hasData && !document.body.classList.contains("has-data")) {
+        document.body.classList.add("has-data");
+        document.getElementById("splash").classList.add("hidden");
+    }
+
+    if (!hasData) return;
+
     const table = document.getElementById("leaderboard");
 
     // Record current row positions and which teams are already in top 5 (FLIP: First)
