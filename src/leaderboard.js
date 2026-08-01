@@ -30,19 +30,21 @@ export async function loadLeaderboard() {
 
     const response = await fetch(API);
 
-    const teams = (await response.json()).sort((a, b) => b.Total - a.Total);
+    const top5 = (await response.json()).sort((a, b) => b.Total - a.Total).slice(0, 5);
 
     const table = document.getElementById("leaderboard");
 
-    // Record current row positions before update (FLIP: First)
+    // Record current row positions and which teams are already in top 5 (FLIP: First)
     const oldPositions = {};
+    const previousTop5 = new Set();
     table.querySelectorAll("tr[data-team]").forEach(row => {
         oldPositions[row.dataset.team] = row.getBoundingClientRect().top;
+        previousTop5.add(row.dataset.team);
     });
 
     // Rebuild rows (FLIP: Last)
     table.innerHTML = "";
-    teams.forEach((team, index) => {
+    top5.forEach((team, index) => {
         const tr = document.createElement("tr");
         tr.dataset.team = team.Teams;
         tr.style.background = getTeamColour(team.Teams);
@@ -54,20 +56,37 @@ export async function loadLeaderboard() {
         table.appendChild(tr);
     });
 
-    // Animate from old positions to new (FLIP: Invert + Play)
+    // Animate rows (FLIP: Invert + Play)
     table.querySelectorAll("tr[data-team]").forEach(row => {
-        const oldTop = oldPositions[row.dataset.team];
-        if (oldTop === undefined) return;
-        const delta = oldTop - row.getBoundingClientRect().top;
-        if (delta === 0) return;
-        row.style.transition = "none";
-        row.style.transform = `translateY(${delta}px)`;
-        requestAnimationFrame(() => {
+        const teamName = row.dataset.team;
+
+        if (!previousTop5.has(teamName)) {
+            // New entrant: slide in from below
+            row.style.transition = "none";
+            row.style.opacity = "0";
+            row.style.transform = "translateY(60px)";
             requestAnimationFrame(() => {
-                row.style.transition = "transform 0.6s ease";
-                row.style.transform = "";
+                requestAnimationFrame(() => {
+                    row.style.transition = "transform 0.6s ease, opacity 0.6s ease";
+                    row.style.transform = "";
+                    row.style.opacity = "";
+                });
             });
-        });
+        } else {
+            // Existing top-5 team: FLIP to new position
+            const oldTop = oldPositions[teamName];
+            if (oldTop === undefined) return;
+            const delta = oldTop - row.getBoundingClientRect().top;
+            if (delta === 0) return;
+            row.style.transition = "none";
+            row.style.transform = `translateY(${delta}px)`;
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    row.style.transition = "transform 0.6s ease";
+                    row.style.transform = "";
+                });
+            });
+        }
     });
 
 }
