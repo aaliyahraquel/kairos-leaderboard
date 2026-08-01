@@ -1,5 +1,23 @@
-const API =
-  "https://docs.google.com/spreadsheets/d/1FtnIg2ORYBQvSFKRpidMLFW5aUpKiKZW/edit?usp=drive_link&ouid=113371019777636115022&rtpof=true&sd=true";
+const SHEET_ID = "1FtnIg2ORYBQvSFKRpidMLFW5aUpKiKZW";
+const GID = "1589135017";
+const API = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+async function fetchTeams() {
+    const response = await fetch(API);
+    const csv = await response.text();
+    const lines = csv.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+    return lines.slice(1)
+        .filter(line => line.trim())
+        .map(line => {
+            const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+            const obj = {};
+            headers.forEach((h, i) => {
+                obj[h] = isNaN(values[i]) || values[i] === '' ? values[i] : Number(values[i]);
+            });
+            return obj;
+        });
+}
 
 const COLOUR_MAP = {
     red:    "#ce0e0e",
@@ -28,9 +46,7 @@ function getTeamColour(teamName) {
 
 export async function loadLeaderboard() {
 
-    const response = await fetch(API);
-
-    const top5 = (await response.json()).sort((a, b) => b.Total - a.Total).slice(0, 5);
+    const top5 = (await fetchTeams()).sort((a, b) => b.Total - a.Total).slice(0, 5);
 
     // Only reveal the leaderboard once at least one team has a score
     const hasData = top5.some(t => t.Total > 0);
