@@ -2,6 +2,38 @@ const SHEET_ID = "1FtnIg2ORYBQvSFKRpidMLFW5aUpKiKZW";
 const GID = "1589135017";
 const API = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
+const COLOUR_MAP = {
+    red: "#ce0e0e",
+    blue: "#2563eb",
+    green: "#00bf63",
+    yellow: "#ffce09",
+    orange: "#ff5f1f",
+    purple: "#731d8c",
+    pink: "#c4789b",
+    white: "#3a3a3a",
+    black: "#1a1a1a",
+    grey: "#2563eb",
+    gray: "#2563eb",
+    cyan: "#005f6b",
+    teal: "#1a5c55",
+    brown: "#4a2800",
+};
+
+function getTeamColour(teamName) {
+    const lower = teamName.toLowerCase();
+    for (const [word, colour] of Object.entries(COLOUR_MAP)) {
+        if (lower.includes(word)) return colour;
+    }
+    return "#1a1a2e";
+}
+
+function getDisplayTeamName(teamName) {
+    return teamName.replace(/grey|gray/gi, match =>
+        match === match.toUpperCase() ? "BLUE" :
+        match[0] === match[0].toUpperCase() ? "Blue" : "blue"
+    );
+}
+
 async function fetchTeams() {
     const response = await fetch(API);
     const csv = await response.text();
@@ -17,31 +49,6 @@ async function fetchTeams() {
             });
             return obj;
         });
-}
-
-const COLOUR_MAP = {
-    red:    "#ce0e0e",
-    blue:   "#2563eb",
-    green:  "#00bf63",
-    yellow: "#ffce09",
-    orange: "#ff5f1f",
-    purple: "#731d8c",
-    pink:   "#c4789b",
-    white:  "#3a3a3a",
-    black:  "#1a1a1a",
-    grey:   "#6b6b6b",
-    gray:   "#6b6b6b",
-    cyan:   "#005f6b",
-    teal:   "#1a5c55",
-    brown:  "#4a2800",
-};
-
-function getTeamColour(teamName) {
-    const lower = teamName.toLowerCase();
-    for (const [word, colour] of Object.entries(COLOUR_MAP)) {
-        if (lower.includes(word)) return colour;
-    }
-    return "#1a1a2e";
 }
 
 export async function loadLeaderboard() {
@@ -75,7 +82,7 @@ export async function loadLeaderboard() {
         tr.style.background = getTeamColour(team.Teams);
         tr.innerHTML = `
             <td>${index + 1}</td>
-            <td>${team.Teams}</td>
+            <td>${getDisplayTeamName(team.Teams)}</td>
             <td>${team.Total}</td>
         `;
         table.appendChild(tr);
