@@ -149,3 +149,67 @@ tr[data-team] td {
                 inset 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
+@media (max-width: 600px) {
+    #main-content {
+        padding: 2vh 3vw 1vh;
+    }
+
+    table {
+        border-spacing: 0 1.2vh;
+    }
+
+    thead th {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+    }
+
+    thead th:first-child,
+    td:first-child {
+        width: 12%;
+    }
+
+    thead th:nth-child(2),
+    td:nth-child(2) {
+        width: 25%;
+    }
+
+    thead th:nth-child(3),
+    td:nth-child(3) {
+        width: 48%;
+    }
+
+    thead th:last-child,
+    td:last-child {
+        width: 15%;
+    }
+
+    td {
+        height: 12vh;
+        max-height: none;
+    }
+
+    td:first-child {
+        font-size: 5vw;
+    }
+
+    td:nth-child(2) {
+        font-size: 4vw;
+        padding-left: 1vw;
+        overflow-wrap: anywhere;
+    }
+
+    td:nth-child(3) {
+        font-size: clamp(9px, 2.6vw, 12px);
+        padding: 0 1vw;
+        line-height: 1.2;
+        white-space: normal;
+        overflow: visible;
+        overflow-wrap: anywhere;
+    }
+
+    td:last-child {
+        font-size: 5vw;
+        padding-right: 1vw;
+    }
+}
+
