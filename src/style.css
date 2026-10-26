@@ -92,8 +92,8 @@ thead th {
 
 thead th:first-child  { text-align: center; width: 10%; }
 thead th:nth-child(2) { text-align: left;   width: 35%; padding-left: 2.5vw; }
-thead th:nth-child(3) { text-align: left;   width: 40%; }
-thead th:last-child   { text-align: right;  width: 15%; padding-right: 2.5vw; }
+thead th:nth-child(3) { text-align: left;   width: 35%; }
+thead th:last-child   { text-align: center; width: 20%; }
 
 td {
     height: 12vh;
@@ -128,11 +128,10 @@ td:nth-child(3) {
 }
 
 td:last-child {
-    text-align: right;
+    text-align: center;
     font-size: 4.5vw;
-    padding-right: 2.5vw;
     border-radius: 0 16px 16px 0;
-    width: 15%;
+    width: 20%;
 }
 
 tr[data-team] {
@@ -175,12 +174,12 @@ tr[data-team] td {
 
     thead th:nth-child(3),
     td:nth-child(3) {
-        width: 48%;
+        width: 43%;
     }
 
     thead th:last-child,
     td:last-child {
-        width: 15%;
+        width: 20%;
     }
 
     td {
@@ -209,7 +208,6 @@ tr[data-team] td {
 
     td:last-child {
         font-size: 5vw;
-        padding-right: 1vw;
     }
 }
 
