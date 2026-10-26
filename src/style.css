@@ -83,16 +83,17 @@ table {
 }
 
 thead th {
-    font-size: 1.2vw;
+    font-size: 1.6vw;
     letter-spacing: 0.3em;
     color: #fff;
     padding-bottom: 0.5vh;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-thead th:first-child  { text-align: center; width: 14%; }
-thead th:nth-child(2) { text-align: left;   width: 56%; padding-left: 2.5vw; }
-thead th:last-child   { text-align: right;  width: 30%; padding-right: 2.5vw; }
+thead th:first-child  { text-align: center; width: 10%; }
+thead th:nth-child(2) { text-align: left;   width: 35%; padding-left: 2.5vw; }
+thead th:nth-child(3) { text-align: left;   width: 40%; }
+thead th:last-child   { text-align: right;  width: 15%; padding-right: 2.5vw; }
 
 td {
     height: 12vh;
@@ -106,15 +107,24 @@ td:first-child {
     text-align: center;
     font-size: 4.2vw;
     border-radius: 16px 0 0 16px;
-    width: 14%;
+    width: 10%;
 }
 
 td:nth-child(2) {
     text-align: left;
     font-size: 3.2vw;
     padding-left: 2.5vw;
-    width: 56%;
+    width: 35%;
     letter-spacing: 0.05em;
+}
+
+td:nth-child(3) {
+    text-align: left;
+    font-size: clamp(9px, 0.8vw, 16px);
+    padding-left: 0.5vw;
+    width: 40%;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
 }
 
 td:last-child {
@@ -122,7 +132,7 @@ td:last-child {
     font-size: 4.5vw;
     padding-right: 2.5vw;
     border-radius: 0 16px 16px 0;
-    width: 30%;
+    width: 15%;
 }
 
 tr[data-team] {

@@ -1,6 +1,7 @@
 const SHEET_ID = "1FtnIg2ORYBQvSFKRpidMLFW5aUpKiKZW";
 const GID = "1589135017";
 const API = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+const TOP_TEAM_NAMES = "Shem, Danielle, Dan, Jubilee, Megan";
 
 const COLOUR_MAP = {
     red: "#ce0e0e",
@@ -81,8 +82,9 @@ export async function loadLeaderboard() {
         tr.dataset.team = team.Teams;
         tr.style.background = getTeamColour(team.Teams);
         tr.innerHTML = `
-            <td>${index + 1}</td>
+            <td>${index === 0 ? "🏆 " : ""}${index + 1}</td>
             <td>${getDisplayTeamName(team.Teams)}</td>
+            <td>${index === 0 ? TOP_TEAM_NAMES : ""}</td>
             <td>${team.Total}</td>
         `;
         table.appendChild(tr);
