@@ -82,7 +82,7 @@ export async function loadLeaderboard() {
         tr.dataset.team = team.Teams;
         tr.style.background = getTeamColour(team.Teams);
         tr.innerHTML = `
-            <td>${index === 0 ? "🏆 " : ""}${index + 1}</td>
+            <td>${index + 1}</td>
             <td>${getDisplayTeamName(team.Teams)}</td>
             <td>${index === 0 ? TOP_TEAM_NAMES : ""}</td>
             <td>${team.Total}</td>
