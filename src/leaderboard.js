@@ -1,7 +1,6 @@
 const SHEET_ID = "1FtnIg2ORYBQvSFKRpidMLFW5aUpKiKZW";
 const GID = "1589135017";
 const API = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-const TOP_TEAM_NAMES = "Shem, Danielle, Dan, Jubilee, Megan";
 
 const COLOUR_MAP = {
     red: "#ce0e0e",
@@ -36,7 +35,8 @@ function getDisplayTeamName(teamName) {
 }
 
 async function fetchTeams() {
-    const response = await fetch(API);
+    const response = await fetch(`${API}&_=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Could not load scores (${response.status})`);
     const csv = await response.text();
     const lines = csv.trim().split('\n');
     const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
@@ -52,12 +52,31 @@ async function fetchTeams() {
         });
 }
 
+function getTeamTotal(team) {
+    const gameAndRoundColumns = Object.keys(team).filter(header =>
+        /game|round/i.test(header) && header.toLowerCase() !== "total"
+    );
+
+    if (gameAndRoundColumns.length > 0) {
+        return gameAndRoundColumns.reduce((sum, header) => {
+            const score = Number(team[header]);
+            return sum + (Number.isFinite(score) ? score : 0);
+        }, 0);
+    }
+
+    const total = Number(team.Total);
+    return Number.isFinite(total) ? total : 0;
+}
+
 export async function loadLeaderboard() {
 
-    const top5 = (await fetchTeams()).sort((a, b) => b.Total - a.Total).slice(0, 5);
+    const top5 = (await fetchTeams())
+        .map(team => ({ ...team, CalculatedTotal: getTeamTotal(team) }))
+        .sort((a, b) => b.CalculatedTotal - a.CalculatedTotal)
+        .slice(0, 5);
 
     // Only reveal the leaderboard once at least one team has a score
-    const hasData = top5.some(t => t.Total > 0);
+    const hasData = top5.some(t => t.CalculatedTotal > 0);
     if (hasData && !document.body.classList.contains("has-data")) {
         document.body.classList.add("has-data");
         document.getElementById("splash").classList.add("hidden");
@@ -84,8 +103,7 @@ export async function loadLeaderboard() {
         tr.innerHTML = `
             <td>${index + 1}</td>
             <td>${getDisplayTeamName(team.Teams)}</td>
-            <td>${index === 0 ? TOP_TEAM_NAMES : ""}</td>
-            <td>${team.Total}</td>
+            <td>${team.CalculatedTotal}</td>
         `;
         table.appendChild(tr);
     });
