@@ -79,16 +79,21 @@ export async function loadLeaderboard() {
         .sort((a, b) => b.CalculatedTotal - a.CalculatedTotal)
         .slice(0, 5);
 
-    // Only reveal the leaderboard once at least one team has a score
+    const table = document.getElementById("leaderboard");
+    const splash = document.getElementById("splash");
     const hasData = top5.some(t => t.CalculatedTotal > 0);
-    if (hasData && !document.body.classList.contains("has-data")) {
-        document.body.classList.add("has-data");
-        document.getElementById("splash").classList.add("hidden");
+
+    if (!hasData) {
+        table.innerHTML = "";
+        document.body.classList.remove("has-data");
+        splash.classList.remove("hidden");
+        return;
     }
 
-    if (!hasData) return;
-
-    const table = document.getElementById("leaderboard");
+    if (!document.body.classList.contains("has-data")) {
+        document.body.classList.add("has-data");
+        splash.classList.add("hidden");
+    }
 
     // Record current row positions and which teams are already in top 5 (FLIP: First)
     const oldPositions = {};
