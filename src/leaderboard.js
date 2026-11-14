@@ -1,6 +1,6 @@
 const SHEET_ID = "1FtnIg2ORYBQvSFKRpidMLFW5aUpKiKZW";
-const GID = "1589135017";
-const API = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+const GAME_SHEETS = ["229388511", "530821742", "2019959769"];
+const API = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
 
 const COLOUR_MAP = {
     red: "#ce0e0e",
@@ -34,11 +34,11 @@ function getDisplayTeamName(teamName) {
     );
 }
 
-async function fetchTeams() {
-    const response = await fetch(`${API}&_=${Date.now()}`, { cache: "no-store" });
-    if (!response.ok) throw new Error(`Could not load scores (${response.status})`);
+async function fetchGameSheet(gid) {
+    const response = await fetch(`${API}&gid=${gid}&_=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Could not load game scores (${response.status})`);
     const csv = await response.text();
-    const lines = csv.trim().split('\n');
+    const lines = csv.trim().split(/\r?\n/);
     const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
     return lines.slice(1)
         .filter(line => line.trim())
@@ -52,26 +52,30 @@ async function fetchTeams() {
         });
 }
 
-function getTeamTotal(team) {
-    const gameAndRoundColumns = Object.keys(team).filter(header =>
-        /game|round/i.test(header) && header.toLowerCase() !== "total"
-    );
+async function fetchTeams() {
+    const gameRows = await Promise.all(GAME_SHEETS.map(fetchGameSheet));
+    const totals = new Map();
 
-    if (gameAndRoundColumns.length > 0) {
-        return gameAndRoundColumns.reduce((sum, header) => {
-            const score = Number(team[header]);
-            return sum + (Number.isFinite(score) ? score : 0);
-        }, 0);
-    }
+    gameRows.forEach(rows => {
+        rows.forEach(team => {
+            if (!team.Teams) return;
+            const name = String(team.Teams).trim();
+            const roundTotal = Object.keys(team)
+                .filter(header => /^round(?:\s|$)/i.test(header))
+                .reduce((sum, header) => {
+                    const score = Number(team[header]);
+                    return sum + (Number.isFinite(score) ? score : 0);
+                }, 0);
+            totals.set(name, (totals.get(name) || 0) + roundTotal);
+        });
+    });
 
-    const total = Number(team.Total);
-    return Number.isFinite(total) ? total : 0;
+    return Array.from(totals, ([Teams, CalculatedTotal]) => ({ Teams, CalculatedTotal }));
 }
 
 export async function loadLeaderboard() {
 
     const top5 = (await fetchTeams())
-        .map(team => ({ ...team, CalculatedTotal: getTeamTotal(team) }))
         .sort((a, b) => b.CalculatedTotal - a.CalculatedTotal)
         .slice(0, 5);
 
